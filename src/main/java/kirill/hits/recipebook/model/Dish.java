@@ -51,7 +51,6 @@ public class Dish {
     private Double portionSize;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
     private DishCategory category;
 
     @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -72,17 +71,13 @@ public class Dish {
     private LocalDateTime updatedAt;
 
     @PrePersist
+    public void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
     @PreUpdate
-    public void validateBJU() {
-
-        if (proteins + fats + carbs > 100) {
-            throw new RuntimeException("Сумма БЖУ блюда не может превышать 100");
-        }
-
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
-
+    public void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
 

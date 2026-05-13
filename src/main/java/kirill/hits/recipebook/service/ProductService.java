@@ -1,10 +1,13 @@
 package kirill.hits.recipebook.service;
 
+import kirill.hits.recipebook.model.DishProduct;
 import kirill.hits.recipebook.model.Product;
+import kirill.hits.recipebook.model.enums.CookingType;
 import kirill.hits.recipebook.model.enums.ProductCategory;
 import kirill.hits.recipebook.repository.DishProductRepository;
 import kirill.hits.recipebook.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +20,7 @@ public class ProductService {
     private final DishProductRepository dishProductRepository;
 
 
-    public Product create(Product product) {
+    public Product create(Product product) throws BadRequestException {
         return productRepository.save(product);
     }
 
@@ -44,15 +47,26 @@ public class ProductService {
         existing.setCookingType(product.getCookingType());
         existing.setComposition(product.getComposition());
         existing.setFlags(product.getFlags());
+        existing.setImages(product.getImages());
 
         return productRepository.save(existing);
     }
 
     public void delete(Long id) {
-        boolean used = dishProductRepository.existsByProductId(id);
 
-        if (used) {
-            throw new RuntimeException("Нельзя удалить продукт — он используется в блюде");
+        List<DishProduct> usages = dishProductRepository.findByProductId(id);
+
+        if (!usages.isEmpty()) {
+
+            String dishes = usages.stream()
+                    .map(dp -> dp.getDish().getName())
+                    .distinct()
+                    .reduce((a, b) -> a + ", " + b)
+                    .orElse("");
+
+            throw new RuntimeException(
+                    "Продукт используется в блюдах: " + dishes
+            );
         }
 
         productRepository.deleteById(id);
@@ -62,7 +76,7 @@ public class ProductService {
         return productRepository.findByNameContainingIgnoreCase(name);
     }
 
-    public List<Product> findAll(String name, ProductCategory category, Boolean requiresCooking, Boolean vegan, Boolean glutenFree, Boolean sugarFree, String sortBy, String direction) {
+    public List<Product> findAll(String name, ProductCategory category, CookingType cookingType, Boolean vegan, Boolean glutenFree, Boolean sugarFree, String sortBy, String direction) {
         List<Product> products = productRepository.findAll();
 
         return products.stream()
@@ -79,8 +93,8 @@ public class ProductService {
                 )
 
                 .filter(p ->
-                        requiresCooking == null ||
-                                p.isRequiresCooking() == requiresCooking
+                        cookingType == null ||
+                                p.getCookingType() == cookingType
                 )
 
                 .filter(p ->

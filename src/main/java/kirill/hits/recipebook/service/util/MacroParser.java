@@ -6,9 +6,7 @@ import java.util.Map;
 
 public class MacroParser {
 
-    private static final Map<String, DishCategory>
-            MACROS = Map.of(
-
+    private static final Map<String, DishCategory> MACROS = Map.of(
             "!десерт", DishCategory.DESSERT,
             "!первое", DishCategory.FIRST,
             "!второе", DishCategory.SECOND,
@@ -22,8 +20,8 @@ public class MacroParser {
         if (name == null) return null;
 
         for (String macro : MACROS.keySet()) {
-            if (name.startsWith(macro)) {
-                return MACROS.get(macro);
+            if (name.toLowerCase().contains(macro)) {
+                return MACROS.get(macro); // 🔥 только первый найденный
             }
         }
 
@@ -34,8 +32,8 @@ public class MacroParser {
         if (name == null) return null;
 
         for (String macro : MACROS.keySet()) {
-            if (name.startsWith(macro)) {
-                return name.replace(macro, "").trim();
+            if (name.toLowerCase().contains(macro)) {
+                return name.replaceFirst("(?i)" + macro, "").trim(); // 🔥 удаляем только один
             }
         }
 

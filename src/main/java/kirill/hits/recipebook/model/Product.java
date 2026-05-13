@@ -1,5 +1,6 @@
 package kirill.hits.recipebook.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import kirill.hits.recipebook.model.enums.CookingType;
@@ -75,31 +76,27 @@ public class Product {
     private LocalDateTime updatedAt;
 
     @PrePersist
-    @PreUpdate
-    public void validateBJU() {
-        if (proteins + fats + carbs > 100) {
-            throw new RuntimeException("Сумма БЖУ не может превышать 100");
-        }
-
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
-
+    public void onCreate() {
+        createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
 
-    public Boolean isRequiresCooking() {
-        return cookingType == CookingType.NEEDS_COOKING;
+    @PreUpdate
+    public void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 
+    @JsonIgnore
     public Boolean isVegan() {
         return flags != null && flags.contains(Flag.VEGAN);
     }
 
+    @JsonIgnore
     public Boolean isGlutenFree() {
         return flags != null && flags.contains(Flag.GLUTEN_FREE);
     }
 
+    @JsonIgnore
     public Boolean isSugarFree() {
         return flags != null && flags.contains(Flag.SUGAR_FREE);
     }

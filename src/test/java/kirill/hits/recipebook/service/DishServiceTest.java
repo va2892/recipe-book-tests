@@ -77,20 +77,6 @@ class DishServiceTest {
         assertEquals(0, result);
     }
 
-    @Test
-    void shouldReturnZeroWhenAmountIsZero() {
-        Product p = createProduct(100);
-
-        Dish dish = new Dish();
-        dish.setProducts(List.of(
-                dp(p, 0)
-        ));
-
-        double result = dishService.calculateCalories(dish);
-
-        assertEquals(0, result);
-    }
-
     @ParameterizedTest
     @CsvSource({
             "100, 1, 1",
@@ -123,6 +109,20 @@ class DishServiceTest {
         double result = dishService.calculateCalories(dish);
 
         assertEquals(10000, result);
+    }
+
+    @Test
+    void shouldReturnZeroWhenAmountIsZero() {
+        Product p = createProduct(100);
+
+        Dish dish = new Dish();
+        dish.setProducts(List.of(
+                dp(p, 0)
+        ));
+
+        double result = dishService.calculateCalories(dish);
+
+        assertEquals(0, result);
     }
 
     @Test
