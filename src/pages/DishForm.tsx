@@ -30,7 +30,7 @@ function DishForm() {
         fats: 0,
         carbs: 0,
         portionSize: 100,
-        category: DishCategory.SECOND,
+        category: null as any,
         products: [],
         flags: []
     });
