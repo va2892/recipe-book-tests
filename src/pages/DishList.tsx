@@ -64,8 +64,10 @@ function DishList() {
             />
 
             <FormControl>
-                <InputLabel>Категория</InputLabel>
+                <InputLabel id="category-label">Категория</InputLabel>
                 <Select
+                    labelId="category-label"
+                    label="Категория"
                     value={filters.category}
                     style={{ width: 130 }}
                     onChange={(e) =>
@@ -132,6 +134,7 @@ function DishList() {
                     >
 
                         <Card
+                            data-testid="dish-card"
                             sx={{
                                 height: "100%",
                                 display: "flex",

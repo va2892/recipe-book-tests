@@ -108,8 +108,14 @@ function ProductList() {
             </FormControl>
 
             <FormControl>
-                <InputLabel>Категория</InputLabel>
-                <Select style={{ width: 130 }} value={filters.category} onChange={ (e) => setFilters({ ...filters, category: e.target.value }) }>
+                <InputLabel id="category-label">Категория</InputLabel>
+                <Select 
+                    labelId="category-label" 
+                    label="Категория"
+                    style={{ width: 130 }} 
+                    value={filters.category} 
+                    onChange={ (e) => setFilters({ ...filters, category: e.target.value }) }
+                >
                     <MenuItem value="">Все</MenuItem>
                     <MenuItem value="FROZEN">Замороженное</MenuItem>
                     <MenuItem value="MEAT">Мясо</MenuItem>
@@ -180,6 +186,7 @@ function ProductList() {
 
                     <Grid size={{ xs: 12, md: 6, lg: 4 }} key={product.id}>
                         <Card
+                            data-testid="product-card"
                             sx={{
                                 height: "100%",
                                 display: "flex",

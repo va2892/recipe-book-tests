@@ -215,6 +215,11 @@ function DishForm() {
             return;
         }
 
+        if (dish.portionSize <= 0) {
+            alert("Размер порции должен быть > 0");
+            return;
+        }
+
         if (
             dish.calories < 0 ||
             dish.proteins < 0 ||
@@ -367,8 +372,10 @@ function DishForm() {
             />
 
             <FormControl fullWidth sx={{ mt: 2 }}>
-                <InputLabel>Категория</InputLabel>
+                <InputLabel id="category-label">Категория</InputLabel>
                 <Select
+                    labelId="category-label"
+                    label="Категория"
                     value={dish.category || ""}
                     onChange={(e) => {
                         const value = e.target.value as DishCategory;
@@ -559,7 +566,7 @@ function DishForm() {
                     <TextField type="number" label="граммы" value={p.amount} onChange={ (e) => updateProduct(index, "amount", Number(e.target.value)) }/>
 
                     <IconButton onClick={ () => removeProduct(index) }>
-                        <DeleteIcon/>
+                        <DeleteIcon/> Удалить
                     </IconButton>
 
                 </div>

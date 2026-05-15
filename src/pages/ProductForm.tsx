@@ -46,7 +46,7 @@ function ProductForm() {
             product.fats < 0 ||
             product.carbs < 0
         ) {
-            alert("КБЖУ должны быть > -1");
+            alert("КБЖУ должны быть >= 0");
             return;
         }
 
@@ -164,9 +164,14 @@ function ProductForm() {
             />
 
             <FormControl fullWidth sx={{ mt: 2 }}>
-                <InputLabel>Категория</InputLabel>
+                <InputLabel id="category-label">Категория</InputLabel>
 
-                <Select value={product.category} onChange={ (e) => handleChange("category", e.target.value) }>
+                <Select 
+                    labelId="category-label" 
+                    label="Категория" 
+                    value={product.category} 
+                    onChange={ (e) => handleChange("category", e.target.value) }
+                >
                     {Object.values(ProductCategory).map((cat) => (
                         <MenuItem key={cat} value={cat}>
                             {CATEGORY_LABELS[cat]}
@@ -176,9 +181,14 @@ function ProductForm() {
             </FormControl>
 
             <FormControl fullWidth sx={{ mt: 2 }}>
-                <InputLabel>Тип готовности</InputLabel>
+                <InputLabel id="cooking-label">Тип готовности</InputLabel>
 
-                <Select value={product.cookingType} onChange={ (e) => handleChange("cookingType", e.target.value) }>
+                <Select 
+                    labelId="cooking-label" 
+                    label="Тип готовности" 
+                    value={product.cookingType} 
+                    onChange={ (e) => handleChange("cookingType", e.target.value) }
+                >
                     {Object.values(CookingType).map((type) => (
                         <MenuItem key={type} value={type}>
                             {COOKING_TYPE_LABELS[type]}
