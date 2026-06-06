@@ -21,4 +21,8 @@ rules:
     pattern: localStorage.setItem($K, $V)
     message: Be careful storing sensitive data in localStorage
     severity: WARNING
+<<<<<<< HEAD
     languages: [javascript, typescript]
+=======
+    languages: [javascript, typescript]
+>>>>>>> a742a911fd66a9d6ae53a6b106b9bff9dec358ce
