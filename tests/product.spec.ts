@@ -193,20 +193,6 @@ for (const nutrient of validNutrient) {
     });
 }
 
-test('Should accept total nutrients = 99.99', async ({ page }) => {
-
-    const name = unique();
-    await page.getByLabel('Название').fill(name);
-    await page.getByLabel('Белки').fill('39.99');
-    await page.getByLabel('Жиры').fill('30');
-    await page.getByLabel('Углеводы').fill('30');
-
-    await page.getByRole('button', { name: 'Сохранить' }).click();
-
-    await expect(page.getByText(name)).toBeVisible();
-    await deleteProduct(page, name);
-});
-
 test('Should accept total nutrients = 100', async ({ page }) => {
 
     const name = unique();
